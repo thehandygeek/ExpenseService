@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 
+using ExpenseService.Utilities;
+
 namespace ExpenseService
 {
     public static class WebApiConfig
@@ -19,6 +21,8 @@ namespace ExpenseService
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.Formatters.Add(new BinaryMediaTypeFormatter());
         }
     }
 }
