@@ -13,6 +13,12 @@ using System.Data.Entity;
 
 namespace ExpenseService.Controllers
 {
+    class ExpenseFilterInfo
+    {
+        public int Month;
+        public int Year;
+    }
+
     public class ExpenseController : ApiController
     {
         private DatabaseContext db = new DatabaseContext();
@@ -23,14 +29,23 @@ namespace ExpenseService.Controllers
         {
             IQueryable<Expense> expenseQuery;
             var expenseId = this.FetchExpenseId();
-            if (expenseId == null)
+            var monthFilterInfo = this.FetchExpenseFilter();
+            if (expenseId != null)
             {
-                expenseQuery = from expense in db.Expenses select expense;
+                var referenceId = Expense.ConvertReferenceIdString(expenseId);
+                expenseQuery = db.Expenses
+                    .Where(e => e.ReferenceId == referenceId);
+            }
+            else if (monthFilterInfo != null)
+            {
+                expenseQuery = db.Expenses
+                    .Where(e => e.Date.Month == monthFilterInfo.Month && e.Date.Year == monthFilterInfo.Year)
+                    .OrderBy(e => e.Date);
             }
             else
             {
-                var referenceId = Expense.ConvertReferenceIdString(expenseId);
-                expenseQuery = from expense in db.Expenses where expense.ReferenceId == referenceId select expense;
+                expenseQuery = db.Expenses
+                   .OrderBy(e => e.Date);
             }
             List<ExpenseResponse> expenses = new List<ExpenseResponse>();
             foreach (var expense in expenseQuery)
@@ -97,6 +112,23 @@ namespace ExpenseService.Controllers
             db.SaveChanges();
 
             return Ok();
+        }
+
+        private ExpenseFilterInfo FetchExpenseFilter()
+        {
+            ExpenseFilterInfo result = null;
+
+            if (this.Request.Headers.Contains("month_filter"))
+            {
+                var stringFilter = this.Request.Headers.GetValues("month_filter").FirstOrDefault();
+                var filterElements = stringFilter.Split('/');
+                if (filterElements.Length == 2 && int.TryParse(filterElements[0], out int month) && int.TryParse(filterElements[1], out int year))
+                {
+                    result = new ExpenseFilterInfo() { Month = month, Year = year };
+                }
+            }
+
+            return result;
         }
     }
 }
