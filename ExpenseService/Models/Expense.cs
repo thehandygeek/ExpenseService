@@ -19,7 +19,6 @@ namespace ExpenseService.Models
         public DateTime Date { get; set; }
         [Required]
         public Guid ReferenceId { get; set; }
-        [Required]
         public RecieptImage Reciept { get; set; }
         [Required]
         public string CompanyId { get; set; }

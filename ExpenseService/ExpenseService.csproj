@@ -207,6 +207,10 @@
     <Compile Include="Migrations\201805161253578_CompanyId.Designer.cs">
       <DependentUpon>201805161253578_CompanyId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805161604512_OptionalReciept.cs" />
+    <Compile Include="Migrations\201805161604512_OptionalReciept.Designer.cs">
+      <DependentUpon>201805161604512_OptionalReciept.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Expense.cs" />
     <Compile Include="Models\ExpenseRequest.cs" />
@@ -304,6 +308,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805161253578_CompanyId.resx">
       <DependentUpon>201805161253578_CompanyId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805161604512_OptionalReciept.resx">
+      <DependentUpon>201805161604512_OptionalReciept.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

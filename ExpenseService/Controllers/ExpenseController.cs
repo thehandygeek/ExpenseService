@@ -13,10 +13,20 @@ using System.Data.Entity;
 
 namespace ExpenseService.Controllers
 {
-    class ExpenseFilterInfo
+    class DateFilter
     {
         public int Month;
         public int Year;
+    }
+    class CompanyFilter
+    {
+        public string CompanyId;
+    }
+
+    class ExpenseFilterInfo
+    {
+        public DateFilter DateFilterInfo;
+        public CompanyFilter CompanyFilterInfo;
     }
 
     public class ExpenseController : ApiController
@@ -29,17 +39,29 @@ namespace ExpenseService.Controllers
         {
             IQueryable<Expense> expenseQuery;
             var expenseId = this.FetchExpenseId();
-            var monthFilterInfo = this.FetchExpenseFilter();
+            var filterInfo = this.FetchExpenseFilter();
             if (expenseId != null)
             {
                 var referenceId = Expense.ConvertReferenceIdString(expenseId);
                 expenseQuery = db.Expenses
                     .Where(e => e.ReferenceId == referenceId);
             }
-            else if (monthFilterInfo != null)
+            else if (filterInfo.DateFilterInfo != null && filterInfo.CompanyFilterInfo != null)
             {
                 expenseQuery = db.Expenses
-                    .Where(e => e.Date.Month == monthFilterInfo.Month && e.Date.Year == monthFilterInfo.Year)
+                    .Where(e => e.Date.Month == filterInfo.DateFilterInfo.Month && e.Date.Year == filterInfo.DateFilterInfo.Year && e.CompanyId == filterInfo.CompanyFilterInfo.CompanyId)
+                    .OrderBy(e => e.Date);
+            }
+            else if (filterInfo.DateFilterInfo != null && filterInfo.CompanyFilterInfo == null)
+            {
+                expenseQuery = db.Expenses
+                    .Where(e => e.Date.Month == filterInfo.DateFilterInfo.Month && e.Date.Year == filterInfo.DateFilterInfo.Year)
+                    .OrderBy(e => e.Date);
+            }
+            else if (filterInfo.DateFilterInfo == null && filterInfo.CompanyFilterInfo != null)
+            {
+                expenseQuery = db.Expenses
+                    .Where(e => e.CompanyId == filterInfo.CompanyFilterInfo.CompanyId)
                     .OrderBy(e => e.Date);
             }
             else
@@ -117,7 +139,7 @@ namespace ExpenseService.Controllers
 
         private ExpenseFilterInfo FetchExpenseFilter()
         {
-            ExpenseFilterInfo result = null;
+            ExpenseFilterInfo result = new ExpenseFilterInfo();
 
             if (this.Request.Headers.Contains("month_filter"))
             {
@@ -125,9 +147,15 @@ namespace ExpenseService.Controllers
                 var filterElements = stringFilter.Split('/');
                 if (filterElements.Length == 2 && int.TryParse(filterElements[0], out int month) && int.TryParse(filterElements[1], out int year))
                 {
-                    result = new ExpenseFilterInfo() { Month = month, Year = year };
+                    result.DateFilterInfo = new DateFilter() { Month = month, Year = year };
                 }
             }
+
+            if (this.Request.Headers.Contains("company_filter"))
+            {
+                var stringFilter = this.Request.Headers.GetValues("company_filter").FirstOrDefault();
+                result.CompanyFilterInfo = new CompanyFilter() { CompanyId = stringFilter };
+             }
 
             return result;
         }
