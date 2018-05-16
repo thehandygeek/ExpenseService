@@ -15,5 +15,7 @@ namespace ExpenseService.Models
         public string Amount { get; set; }
         [JsonProperty("date")]
         public string Date { get; set; }
+        [JsonProperty("company_id")]
+        public string CompanyId { get; set; }
     }
 }

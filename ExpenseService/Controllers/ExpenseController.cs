@@ -72,6 +72,7 @@ namespace ExpenseService.Controllers
             var newExpense = new Expense();
             newExpense.Type = request.Type;
             newExpense.Amount = amount;
+            newExpense.CompanyId = request.CompanyId;
             try
             {
                 newExpense.Date = DateTime.ParseExact(request.Date, "d", CultureInfo.InvariantCulture);

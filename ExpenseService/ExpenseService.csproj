@@ -203,6 +203,10 @@
     <Compile Include="Migrations\201802042125296_ExpenseRefId.Designer.cs">
       <DependentUpon>201802042125296_ExpenseRefId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805161253578_CompanyId.cs" />
+    <Compile Include="Migrations\201805161253578_CompanyId.Designer.cs">
+      <DependentUpon>201805161253578_CompanyId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Expense.cs" />
     <Compile Include="Models\ExpenseRequest.cs" />
@@ -297,6 +301,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802042125296_ExpenseRefId.resx">
       <DependentUpon>201802042125296_ExpenseRefId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805161253578_CompanyId.resx">
+      <DependentUpon>201805161253578_CompanyId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

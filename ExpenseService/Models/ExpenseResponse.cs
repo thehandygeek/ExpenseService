@@ -17,6 +17,8 @@ namespace ExpenseService.Models
         public String Date { get; set; }
         [JsonProperty("reference_id")]
         public String ReferenceId { get; set; }
+        [JsonProperty("company_id")]
+        public String CompanyId { get; set; }
 
         public ExpenseResponse(Expense expense)
         {
@@ -24,6 +26,7 @@ namespace ExpenseService.Models
             this.Amount = expense.Amount.ToString();
             this.Date = expense.Date.ToShortDateString();
             this.ReferenceId = expense.ReferenceIdString;
+            this.CompanyId = expense.CompanyId;
         }
     }
 }
