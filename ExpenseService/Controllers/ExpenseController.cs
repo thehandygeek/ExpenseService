@@ -111,6 +111,44 @@ namespace ExpenseService.Controllers
 
         [SessionValid]
         [RequireHttps]
+        public IHttpActionResult Put([FromBody] ExpenseRequest request)
+        {
+            var expenseId = this.FetchExpenseId();
+            if (request == null || request.Amount == null || request.Date == null || request.Type == null)
+            {
+                return this.StatusCode(HttpStatusCode.BadRequest);
+            }
+            var referenceId = Expense.ConvertReferenceIdString(expenseId);
+            var foundExpense = db.Expenses
+                .Where(e => e.ReferenceId == referenceId)
+                .FirstOrDefault();
+            if (foundExpense == null)
+            {
+                return this.StatusCode((HttpStatusCode)422);
+            }
+            Decimal amount;
+            if (!Decimal.TryParse(request.Amount, out amount))
+            {
+                return this.StatusCode((HttpStatusCode)422);
+            }
+            foundExpense.Type = request.Type;
+            foundExpense.Amount = amount;
+            foundExpense.CompanyId = request.CompanyId;
+            try
+            {
+                foundExpense.Date = DateTime.ParseExact(request.Date, "d", CultureInfo.InvariantCulture);
+                db.SaveChanges();
+            }
+            catch
+            {
+                return this.StatusCode((HttpStatusCode)422);
+            }
+
+            return Ok(new { expense_id = foundExpense.ReferenceIdString });
+        }
+
+        [SessionValid]
+        [RequireHttps]
         public IHttpActionResult Delete()
         {
             var expenseId = this.FetchExpenseId();
