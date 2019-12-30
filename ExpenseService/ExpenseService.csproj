@@ -188,7 +188,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\ApiControllerExtension.cs" />
     <Compile Include="Controllers\ExpenseController.cs" />
-    <Compile Include="Controllers\RecieptController.cs" />
+    <Compile Include="Controllers\ReceiptController.cs" />
     <Compile Include="Controllers\SessionController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DAL\DatabaseContext.cs" />
@@ -211,11 +211,15 @@
     <Compile Include="Migrations\201805161604512_OptionalReciept.Designer.cs">
       <DependentUpon>201805161604512_OptionalReciept.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201912291850024_Rename Receipt.cs" />
+    <Compile Include="Migrations\201912291850024_Rename Receipt.Designer.cs">
+      <DependentUpon>201912291850024_Rename Receipt.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Expense.cs" />
     <Compile Include="Models\ExpenseRequest.cs" />
     <Compile Include="Models\ExpenseResponse.cs" />
-    <Compile Include="Models\RecieptImage.cs" />
+    <Compile Include="Models\ReceiptImage.cs" />
     <Compile Include="Models\Session.cs" />
     <Compile Include="Models\SessionRequest.cs" />
     <Compile Include="Models\User.cs" />
@@ -255,6 +259,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\PublishProfiles\TouchExpenseService - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\TouchExpenseService - Web Deploy1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -297,6 +302,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805161604512_OptionalReciept.resx">
       <DependentUpon>201805161604512_OptionalReciept.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912291850024_Rename Receipt.resx">
+      <DependentUpon>201912291850024_Rename Receipt.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -15,7 +15,7 @@ using System.Data.Entity;
 
 namespace ExpenseService.Controllers
 {
-    public class RecieptController : ApiController
+    public class ReceiptController : ApiController
     {
         protected DatabaseContext db = new DatabaseContext();
 
@@ -31,14 +31,14 @@ namespace ExpenseService.Controllers
             var referenceId = Expense.ConvertReferenceIdString(expenseId);
             var foundExpense = db.Expenses
                                .Where(e => e.ReferenceId == referenceId)
-                               .Include(e => e.Reciept)
+                               .Include(e => e.Receipt)
                                .FirstOrDefault();
-             if (foundExpense == null || foundExpense.Reciept == null)
+             if (foundExpense == null || foundExpense.Receipt == null)
             {
                 return this.StatusCode((HttpStatusCode)422);
             }
  
-            return new BinaryResult(foundExpense.Reciept.ImageData, "image/jpeg");
+            return new BinaryResult(foundExpense.Receipt.ImageData, "image/jpeg");
         }
 
         [SessionValid]
@@ -59,10 +59,15 @@ namespace ExpenseService.Controllers
                 return this.StatusCode((HttpStatusCode) 422);
             }
 
-            var newReciept = new RecieptImage();
-            newReciept.ImageData = imageData;
-            db.Reciepts.Add(newReciept);
-            foundExpense.Reciept = newReciept;
+            if (foundExpense.Receipt != null)
+            {
+                // Need to remove previous if exists
+                db.Receipts.Remove(foundExpense.Receipt);
+            }
+            var newReceipt = new ReceiptImage();
+            newReceipt.ImageData = imageData;
+            db.Receipts.Add(newReceipt);
+            foundExpense.Receipt = newReceipt;
             db.SaveChanges();
             return Ok();
         }

@@ -19,7 +19,7 @@ namespace ExpenseService.DAL
         public DbSet<User> Users { get; set; }
         public DbSet<Session> Sessions { get; set; }
         public DbSet<Expense> Expenses { get; set; }
-        public DbSet<RecieptImage> Reciepts { get; set; }
+        public DbSet<ReceiptImage> Receipts { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

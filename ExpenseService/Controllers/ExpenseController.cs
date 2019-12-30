@@ -159,15 +159,15 @@ namespace ExpenseService.Controllers
             var referenceId = Expense.ConvertReferenceIdString(expenseId);
             var foundExpense = db.Expenses
                                .Where(e => e.ReferenceId == referenceId)
-                               .Include(e => e.Reciept)
+                               .Include(e => e.Receipt)
                                .FirstOrDefault();
             if (foundExpense == null)
             {
                 return this.StatusCode((HttpStatusCode)422);
             }
-            if (foundExpense.Reciept != null)
+            if (foundExpense.Receipt != null)
             {
-                db.Reciepts.Remove(foundExpense.Reciept);
+                db.Receipts.Remove(foundExpense.Receipt);
             }
             db.Expenses.Remove(foundExpense);
             db.SaveChanges();
